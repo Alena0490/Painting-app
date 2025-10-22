@@ -1,0 +1,9 @@
+.draw-area {
+    border: 2px solid #000;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    width: 800px;
+    height: 600px;
+    position: relative;
+}
