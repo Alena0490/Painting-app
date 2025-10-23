@@ -11,8 +11,31 @@ const Canvas = () => {
     const [lineWidth, setLineWidth] = useState(5);
     const [lineOpacity, setLineOpacity] = useState(1);
     const [tool, setTool] = useState("pencil");
-    const [zoom, setZoom] = useState();
+    const [zoom, setZoom] = useState(1);
     const [pan, setPan] = useState({ x: 0, y: 0 }); // in „canvas units“
+
+    //Zoom handlers
+    const zoomOut = () => {
+        console.log("Zoom OUT kliknuto!");
+        setZoom(z => {
+            console.log("Stará hodnota:", z);
+            const nova = Math.max(0.25, +(z * 0.9).toFixed(3));
+            console.log("Nová hodnota:", nova);
+            return nova;
+        });
+    };
+
+    const zoomIn = () => {
+        console.log("Zoom IN kliknuto!");
+        setZoom(z => {
+            console.log("Stará hodnota:", z);
+            const nova = Math.min(4, +(z * 1.1).toFixed(3));
+            console.log("Nová hodnota:", nova);
+            return nova;
+        });
+    };
+
+    const zoomReset = () => setZoom(1)
     
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -30,41 +53,75 @@ const Canvas = () => {
     /*** Drawing functions */
     // Start drawing
     const startDrawing = (e) => {
+        const canvas = canvasRef.current;
+        const rect = canvas.getBoundingClientRect();
+        
+        // Calculate base dimensions (without zoom applied)
+        const baseWidth = rect.width / zoom;
+        const baseHeight = rect.height / zoom;
+
+        // Calculate scale factor from CSS pixels to canvas bitmap pixels
+        const scaleX = canvas.width / baseWidth;
+        const scaleY = canvas.height / baseHeight;
+        
+        // Get mouse position relative to canvas
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+        
+        // Convert to canvas bitmap coordinates (compensate for zoom and DPR)
+        const x = (mouseX / zoom) * scaleX;
+        const y = (mouseY / zoom) * scaleY;
+        
         ctxRef.current.beginPath();
-        ctxRef.current.moveTo(
-            e.nativeEvent.offsetX,  
-            e.nativeEvent.offsetY
-        );
+        ctxRef.current.moveTo(x, y);
         setIsDrawing(true);
     }
-    
+
     // End drawing
     const endDrawing = () => {
         ctxRef.current.closePath();
         setIsDrawing(false);
     }
-    
-    // During drawing
+
+    // Drawing
     const draw = (e) => {
         if (!isDrawing) return;
-        ctxRef.current.lineTo(
-            e.nativeEvent.offsetX,
-            e.nativeEvent.offsetY
-        );
+        
+        const canvas = canvasRef.current;
+        const rect = canvas.getBoundingClientRect();
+        
+        // Calculate base dimensions (without zoom applied)
+        const baseWidth = rect.width / zoom;
+        const baseHeight = rect.height / zoom;
+
+        // Calculate scale factor from CSS pixels to canvas bitmap pixels
+        const scaleX = canvas.width / baseWidth;
+        const scaleY = canvas.height / baseHeight;
+        
+        // Get mouse position relative to canvas
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+        
+         // Convert to canvas bitmap coordinates (compensate for zoom and DPR)
+        const x = (mouseX / zoom) * scaleX;
+        const y = (mouseY / zoom) * scaleY;
+        
+        // Draw line to new position
+        ctxRef.current.lineTo(x, y);
         ctxRef.current.stroke();
     }
-    
+   
     // utilities
     const idx = (x, y, w) => (y * w + x) * 4; // RGBA index
     const colorMatch = (data, i, target, tol) => {
         const dr = data[i]   - target[0];
         const dg = data[i+1] - target[1];
         const db = data[i+2] - target[2];
-        const da = data[i+3] - target[3]; // ✅ Přidána alpha kontrola!
+        const da = data[i+3] - target[3]; // ✅ Check Alpha
         return (Math.abs(dr) + Math.abs(dg) + Math.abs(db) + Math.abs(da)) <= tol;
     };
 
-    // ✅ OPRAVENÝ Flood fill s visited tracking
+    // ✅Flood fill + visited tracking
     function floodFill(ctx, x, y, fillRGBA, tolerance = 0) {
         const { width: w, height: h } = ctx.canvas;
         
@@ -85,11 +142,11 @@ const Canvas = () => {
             target[3] === fillRGBA[3]
         ) return;
         
-        // ✅ KLÍČOVÁ OPRAVA: Použít visited array pro sledování navštívených pixelů
+        // ✅ Use visited array for watching visited pixels
         const visited = new Uint8Array(w * h);
         
         const stack = [[x, y]];
-        visited[y * w + x] = 1; // Označit startovní pixel jako navštívený
+        visited[y * w + x] = 1; // Mark the starting pixel as visited
         
         while (stack.length) {
             const [cx, cy] = stack.pop();
@@ -153,6 +210,10 @@ const Canvas = () => {
                 setLineOpacity={setLineOpacity}
                 tool={tool}
                 setTool={setTool}
+                zoom={zoom}
+                onZoomIn={zoomIn}
+                onZoomOut={zoomOut}
+                onZoomReset={zoomReset}
             />
             <DrawArea
                 canvasRef={canvasRef}
@@ -170,6 +231,9 @@ const Canvas = () => {
                 setLineColor={setLineColor}
                 setTool={setTool}
                 floodFill={floodFill}
+                zoom={zoom}
+                pan={pan}
+                setPan={setPan}
             />
         </div>
     )

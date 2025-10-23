@@ -1,21 +1,22 @@
 import "./Menu.css"
 import { PiPaintBucketBold } from "react-icons/pi";
-import { FaPen, FaEraser, FaEyeDropper, FaArrowLeft, FaArrowRight, FaDownload, FaTrashAlt, FaPlus, FaMinus } from "react-icons/fa";
+import { FaPen, FaEraser, FaEyeDropper, FaArrowLeft, FaArrowRight, FaDownload, FaTrashAlt, FaPlus, FaMinus, FaHandPaper } from "react-icons/fa";
 import { MdGradient } from "react-icons/md";
 
-const Menu = ({ lineColor, setLineColor, lineWidth, setLineWidth, lineOpacity, setLineOpacity, tool, setTool }) => {
+const Menu = ({ lineColor, setLineColor, lineWidth, setLineWidth, lineOpacity, setLineOpacity, tool, setTool, onZoomIn, onZoomOut, zoom }) => {
   return (
      <nav className="menu">
         <h1>Paint App</h1>
         <article className="navigation">
          <div className="group zoom">
             <h2 className="tools-title">
-                Zoom
+                Zoom: {(zoom * 100).toFixed(0)}% 
             </h2>
             <div className="buttons">
                 <button
                     type="button"
                     aria-label="Zoom out"
+                    onClick={onZoomOut}
                 >
                     <FaMinus/>
                 </button>
@@ -23,10 +24,25 @@ const Menu = ({ lineColor, setLineColor, lineWidth, setLineWidth, lineOpacity, s
                 <button
                     type="button"
                     aria-label="Zoom in"
+                    onClick={onZoomIn}
                 >
                     <FaPlus />
                 </button>
             </div>
+      </div>
+      <div className="pan-group">
+        <h2 className="tools-title">Move</h2>
+        <button
+            type="button"
+            id="move-tool"
+            title="Move tool (pan canvas)"
+            className={tool === "move" ? "active" : ""}
+            aria-label="Move"
+            aria-pressed={tool === "move"}
+            onClick={() => setTool("move")}
+        >
+            <FaHandPaper />
+        </button>
       </div>
       <div className="brush-color">
         <label htmlFor="brush-color" className="tools-title">Color</label>
