@@ -1,0 +1,118 @@
+:root {
+  /* brand */
+  --primary-color: #7F6DF2;
+  --primary-color-tranparent: #7f6df290;
+  --primary-color-light: #9688F2;
+  --primary-color-light-transparent: #9688F290;
+  --secondary-color: #BFF207;
+  --secondary-color-transparent: #BFF207DD0;
+  --secondary-color-warm: #D7F205;
+  --secondary-color-warm-transparent: #D7F205D0;
+  --secondary-color-dark: #86aa05;
+
+  /* text */
+  --text-color: #014034;           /* primární text */
+  --text-muted: #54756d;           /* méně důležitý text */
+  --text-on-primary: #ffffff;      /* text na primárním pozadí */
+
+  /* surfaces & backgrounds */
+  --bg: #f7f8fa;             
+  --surface: #ffffff;              /* panely, karty, menu */
+  --surface-2: #f1f3f5;            /* zvýrazněné/sekundární pozadí */
+  --canvas-bg: #ffffff;           
+
+  /* borders & shadows */
+  --border: #e6e8eb;
+  --border-strong: #cfd4da;
+  --shadow-color: #0d001ed3;         /* pro drop-shadow (HSL hue/sat/light) */
+
+  /* states */
+  --success: #16a34a;
+  --warning: #f59e0b;
+  --danger:  #ef4444;
+  --info:    #0ea5e9;
+
+  /* tools UI */
+  --tool-active-bg: #ece9ff;       /* aktivní tlačítko nástroje */
+  --tool-active-border: #cfc8ff;
+  --tool-hover-bg: #f4f5ff;
+  --tool-disabled: #c3c7cd;
+
+  /* sliders/inputs */
+  --control-track: #e4e7eb;
+  --control-thumb: #7F6DF2;
+  --control-focus: #7F6DF2;        /* ring/outline barva */
+
+  /* focus ring */
+  --focus-ring: 2px solid #7F6DF2;
+
+  /* overlay/toasts/modals */
+  --overlay: rgba(0,0,0,0.4);
+
+  /*** Glass effect */
+  --glass-blur: 5px;
+  --glass-opacity: 0.12;
+  --glass-border: 1px solid rgba(255, 255, 255, 0.35);
+  --glass-glow: 0 10px 30px rgba(0,0,0,.08);
+
+  /* colors */
+  --glass-light: rgba(255, 255, 255, 0.72);
+  --glass-tint: rgba(255, 255, 255, 0.72);              /* tmavé sklo */
+  --glass-stroke: rgba(127, 109, 242, 0.25); 
+  --glass-highlight: rgba(191, 242, 7, 0.18);       /* horní „odlesk“ */
+
+/* dark */
+  --glass-tint-light: rgba(15, 18, 20, 0.64);      
+  --glass-stroke-light: rgba(255, 255, 255, 0.22);
+  --glass-highlight-light: rgba(127, 109, 242, 0.22);
+
+  /* spacing scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+
+  /* radii */
+  --radius-sm: 0.125rem;
+  --radius-md: 0.25rem;
+  --radius-lg: 0.5rem;
+  --radius-full: 1rem;
+
+  /* sizing */
+  --btn-h: 36px;
+  --icon: 18px;
+  --icon-lg: 22px;
+
+  /* z-index */
+  --z-menu: 10;
+  --z-toast: 1000;
+  --z-modal: 1100;
+
+  /* transitions */
+  --ease: cubic-bezier(.2,.7,.2,1);
+  --dur-1: 120ms;
+  --dur-2: 200ms;
+
+  /* optional HSL transparency/gradients */
+  --primary-h: 248;
+  --primary-s: 84%;
+  --primary-l: 69%;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0%;
+  padding: 0%;
+}
+
+body {
+  background-image: linear-gradient(120deg, var(--primary-color-light) 0%, var(--primary-color) 100%);
+  background-image: url(./img/waves.webp);
+  background-position: center center;
+  background-size: cover;
+  color: var(--text-color);
+  font-family: "Figtree", sans-serif;
+}
+
