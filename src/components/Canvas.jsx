@@ -6,37 +6,38 @@ import DrawArea from "./DrawArea"
 const Canvas = () => {
     const canvasRef = useRef(null);
     const ctxRef = useRef(null);
+
     const [isDrawing, setIsDrawing] = useState(false);
     const [lineColor, setLineColor] = useState("#000000");
     const [lineWidth, setLineWidth] = useState(5);
     const [lineOpacity, setLineOpacity] = useState(1);
     const [tool, setTool] = useState("pencil");
+
+    // View transform (logical coordinates)
     const [zoom, setZoom] = useState(1);
     const [pan, setPan] = useState({ x: 0, y: 0 }); // in „canvas units“
 
-    //Zoom handlers
+    /* ZOOM HANDLERS */
+    // Zoom Out
     const zoomOut = () => {
-        console.log("Zoom OUT kliknuto!");
         setZoom(z => {
-            console.log("Stará hodnota:", z);
             const nova = Math.max(0.25, +(z * 0.9).toFixed(3));
-            console.log("Nová hodnota:", nova);
             return nova;
         });
     };
 
+    // Zoom In
     const zoomIn = () => {
-        console.log("Zoom IN kliknuto!");
         setZoom(z => {
-            console.log("Stará hodnota:", z);
             const nova = Math.min(4, +(z * 1.1).toFixed(3));
-            console.log("Nová hodnota:", nova);
             return nova;
         });
     };
 
-    const zoomReset = () => setZoom(1)
+    // Zoom Reset
+    const zoomReset = () => { setZoom(1); setPan({ x: 0, y: 0 }); };
     
+    // HiDPI sizing + (re)apply transforms and brush styles
     useEffect(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
@@ -102,7 +103,7 @@ const Canvas = () => {
         const mouseX = e.clientX - rect.left;
         const mouseY = e.clientY - rect.top;
         
-         // Convert to canvas bitmap coordinates (compensate for zoom and DPR)
+        // Convert to canvas bitmap coordinates (compensate for zoom and DPR)
         const x = (mouseX / zoom) * scaleX;
         const y = (mouseY / zoom) * scaleY;
         
@@ -125,7 +126,7 @@ const Canvas = () => {
     function floodFill(ctx, x, y, fillRGBA, tolerance = 0) {
         const { width: w, height: h } = ctx.canvas;
         
-        // Check bounds
+        // Bounds check
         if (x < 0 || x >= w || y < 0 || y >= h) return;
         
         const img = ctx.getImageData(0, 0, w, h);
@@ -134,7 +135,7 @@ const Canvas = () => {
         const i0 = idx(x, y, w);
         const target = [data[i0], data[i0+1], data[i0+2], data[i0+3]];
         
-        // If target color is same as fill color, nothing to do
+        // Early exit if target already equals fill color
         if (
             target[0] === fillRGBA[0] &&
             target[1] === fillRGBA[1] &&
@@ -142,7 +143,7 @@ const Canvas = () => {
             target[3] === fillRGBA[3]
         ) return;
         
-        // ✅ Use visited array for watching visited pixels
+        // Visited bitmap to avoid reprocessing
         const visited = new Uint8Array(w * h);
         
         const stack = [[x, y]];
@@ -161,7 +162,7 @@ const Canvas = () => {
             data[i+2] = fillRGBA[2];
             data[i+3] = fillRGBA[3];
             
-            // ✅ Přidat sousedy pouze pokud ještě nebyli navštíveni
+            /* Push 4-neighbors if not visited */
             // Left
             if (cx > 0) {
                 const leftIdx = cy * w + (cx - 1);
@@ -227,7 +228,7 @@ const Canvas = () => {
                 lineWidth={lineWidth}
                 lineOpacity={lineOpacity}
                 endDrawing={endDrawing}
-                SetLineOpacity={setLineOpacity}
+                setLineOpacity={setLineOpacity}
                 setLineColor={setLineColor}
                 setTool={setTool}
                 floodFill={floodFill}

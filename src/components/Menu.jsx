@@ -3,7 +3,7 @@ import { PiPaintBucketBold } from "react-icons/pi";
 import { FaPen, FaEraser, FaEyeDropper, FaArrowLeft, FaArrowRight, FaDownload, FaTrashAlt, FaPlus, FaMinus, FaHandPaper } from "react-icons/fa";
 import { MdGradient } from "react-icons/md";
 
-const Menu = ({ lineColor, setLineColor, lineWidth, setLineWidth, lineOpacity, setLineOpacity, tool, setTool, onZoomIn, onZoomOut, zoom }) => {
+const Menu = ({ lineColor, setLineColor, lineWidth, setLineWidth, lineOpacity, setLineOpacity, tool, setTool, onZoomIn, onZoomOut, onZoomReset, zoom }) => {
   return (
      <nav className="menu">
         <h1>Paint App</h1>
@@ -170,7 +170,12 @@ const Menu = ({ lineColor, setLineColor, lineWidth, setLineWidth, lineOpacity, s
                     id="clear-tool"
                     title="Delete picture" 
                     aria-label="Delete the picture"
-                    onClick={() => window.confirm("Do you want to delete the picture?") && setTool("clear")}
+                    onClick={() => {
+                        if (window.confirm("Do you want to delete the picture?")) {
+                            onZoomReset?.();   // ← call reset
+                            setTool("clear");  // ← then clear
+                        }
+                    }}
                 >
                     <FaTrashAlt />
                 </button>
