@@ -21,7 +21,7 @@
     border-radius: var(--radius-lg);
     transform: translate(var(--pan-x, 0px), var(--pan-y, 0px)) scale(var(--zoom, 1));
     transform-origin: top left;
-    image-rendering: pixelated;
+    image-rendering: auto;
     cursor: crosshair;
 }
 

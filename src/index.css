@@ -45,7 +45,7 @@
   --control-focus: #7F6DF2;        /* ring/outline barva */
 
   /* focus ring */
-  --focus-ring: 2px solid #7F6DF2;
+  --focus-ring: 2px solid #D7F205;
 
   /* overlay/toasts/modals */
   --overlay: rgba(0,0,0,0.4);
@@ -140,5 +140,11 @@ body {
   background-size: cover;
   color: var(--text-color);
   font-family: "Figtree", sans-serif;
+}
+
+button:focus-visible,
+input:focus-visible,
+[role="button"]:focus-visible {
+  outline: var(--focus-ring);
 }
 

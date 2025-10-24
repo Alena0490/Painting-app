@@ -49,8 +49,9 @@ const Canvas = () => {
         ctx.globalAlpha = lineOpacity;
         ctx.strokeStyle = lineColor;
         ctxRef.current = ctx;
+        ctx.filter = 'none'; // keep default
     }, [lineColor, lineWidth, lineOpacity]);
-    
+   
     /*** Drawing functions */
     // Start drawing
     const startDrawing = (e) => {
@@ -109,7 +110,17 @@ const Canvas = () => {
         
         // Draw line to new position
         ctxRef.current.lineTo(x, y);
-        ctxRef.current.stroke();
+        // ctxRef.current.stroke();
+        const ctx = ctxRef.current;
+        if (tool === 'pencil') {
+            const prev = ctx.filter;                 // save
+            const blur = Math.min(1.0, lineWidth * 0.06); // scale with size (e.g. 5px -> 0.3, 20px -> 1.0)
+            ctx.filter = `blur(${blur}px)`;
+            ctx.stroke();
+            ctx.filter = prev;                        // restore
+        } else {
+            ctx.stroke();
+        }
     }
    
     // utilities

@@ -10,27 +10,6 @@ const DrawArea = ({
   // [ADD] Track gradient drag start
   const [gradStart, setGradStart] = useState(null);
 
-  // // [ADD] Event -> canvas bitmap coords (respects zoom)
-  // const evtToBitmap = (e) => {
-  //   const canvas = canvasRef.current;
-  //   const rect = canvas.getBoundingClientRect();
-
-  //   // Base size without CSS zoom
-  //   const baseWidth = rect.width / zoom;
-  //   const baseHeight = rect.height / zoom;
-
-  //   // CSS px -> bitmap px
-  //   const scaleX = canvas.width / baseWidth;
-  //   const scaleY = canvas.height / baseHeight;
-
-  //   const mouseX = e.clientX - rect.left;
-  //   const mouseY = e.clientY - rect.top;
-
-  //   const x = Math.max(0, Math.floor((mouseX / zoom) * scaleX));
-  //   const y = Math.max(0, Math.floor((mouseY / zoom) * scaleY));
-  //   return { x, y };
-  // };
-
   // [ADD] Hex -> RGB
   const hexToRgb = (hex) => {
     const h = hex.replace("#", "");
