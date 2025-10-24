@@ -16,7 +16,9 @@
     height: 100%;
     aspect-ratio: unset;
     background-color: var(--bg-secondary);
-    border-radius: var(--radius-md);
+    border: 1px solid var(--border-strong);
+    box-shadow: 1px 1px 5px var(--glass-stroke);
+    border-radius: var(--radius-lg);
     transform: translate(var(--pan-x, 0px), var(--pan-y, 0px)) scale(var(--zoom, 1));
     transform-origin: top left;
     image-rendering: pixelated;

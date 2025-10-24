@@ -1,11 +1,46 @@
-import { useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import "./DrawArea.css";
 
 const DrawArea = ({ 
   canvasRef, startDrawing, draw, endDrawing, ctxRef, tool, 
   lineColor, lineWidth, lineOpacity, setLineColor, setTool, zoom, floodFill, pan, setPan   
 }) => {
-  
+
+  /*** GRADIENT TOOL */
+  // [ADD] Track gradient drag start
+  const [gradStart, setGradStart] = useState(null);
+
+  // // [ADD] Event -> canvas bitmap coords (respects zoom)
+  // const evtToBitmap = (e) => {
+  //   const canvas = canvasRef.current;
+  //   const rect = canvas.getBoundingClientRect();
+
+  //   // Base size without CSS zoom
+  //   const baseWidth = rect.width / zoom;
+  //   const baseHeight = rect.height / zoom;
+
+  //   // CSS px -> bitmap px
+  //   const scaleX = canvas.width / baseWidth;
+  //   const scaleY = canvas.height / baseHeight;
+
+  //   const mouseX = e.clientX - rect.left;
+  //   const mouseY = e.clientY - rect.top;
+
+  //   const x = Math.max(0, Math.floor((mouseX / zoom) * scaleX));
+  //   const y = Math.max(0, Math.floor((mouseY / zoom) * scaleY));
+  //   return { x, y };
+  // };
+
+  // [ADD] Hex -> RGB
+  const hexToRgb = (hex) => {
+    const h = hex.replace("#", "");
+    return {
+      r: parseInt(h.slice(0, 2), 16),
+      g: parseInt(h.slice(2, 4), 16),
+      b: parseInt(h.slice(4, 6), 16),
+    };
+  };
+
   /*** HISTORY for Undo functionality ***/
   const historyRef = useRef([]);
   const redoRef = useRef([]);
@@ -181,9 +216,44 @@ const DrawArea = ({
   };
 }, [pan, setPan, canvasRef]);
 
-  // Drawing and tool handlers
+  /* Drawing and tool handlers */
+  // finish gradient on mouse up (wash over whole canvas along the drag)
+  function handleMouseUp(e) {
+    if (tool === "gradient" && gradStart) {
+      const end = getCanvasXY(e);                 // end point
+      const ctx = ctxRef.current;
+      const { r, g, b } = hexToRgb(lineColor);
+
+      // save to history for Undo
+      snapshot?.();
+
+      const lg = ctx.createLinearGradient(gradStart.x, gradStart.y, end.x, end.y);
+      lg.addColorStop(0, `rgba(${r},${g},${b},0)`);
+      lg.addColorStop(1, `rgba(${r},${g},${b},${lineOpacity})`);
+
+      ctx.save();
+      ctx.globalCompositeOperation = "source-over";
+      ctx.fillStyle = lg;
+      ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+      ctx.restore();
+
+      setGradStart(null);
+      setTool?.("pencil");                       // back to pencil
+      return;                                    // don't call endDrawing
+    }
+
+    // default path: finish normal stroke
+    endDrawing(e);
+  }
+
   const handleMouseDown = (e) => {
     const ctx = ctxRef.current;
+
+      if (tool === "gradient") {
+        // start point in canvas bitmap coords
+        setGradStart(getCanvasXY(e));          
+        return;
+      }
     if (!ctx) return;
 
     // 🖐️ Move tool (pan)
@@ -191,7 +261,7 @@ const DrawArea = ({
       e.preventDefault();
       isPanningRef.current = true;
       panStartRef.current = { x: e.clientX - pan.x, y: e.clientY - pan.y };
-      return; // ← DŮLEŽITÉ - skončit TU!
+      return; 
     }
 
     //🪣 Bucket tool
@@ -246,8 +316,8 @@ const DrawArea = ({
         data-tool={tool}
         onMouseDown={handleMouseDown}
         onMouseMove={draw}
-        onMouseUp={endDrawing}
-        onMouseLeave={endDrawing}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseUp}
       />
     </div>
   );

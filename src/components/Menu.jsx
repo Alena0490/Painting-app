@@ -134,6 +134,7 @@ const Menu = ({ lineColor, setLineColor, lineWidth, setLineWidth, lineOpacity, s
                     title="Gradient tool"
                     aria-label="Gradient tool"
                     aria-pressed={tool === "gradient"}
+                    onClick={() => setTool("gradient")}ool
                 >
                     <MdGradient/>
                 </button>

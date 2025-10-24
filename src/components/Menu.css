@@ -127,8 +127,8 @@
 }
 
 .menu button svg {
-    width: 12px;
-    height: 12px;
+    width: auto;
+    height: 14px;
     fill: currentColor;
     vertical-align: middle;
     pointer-events: none;
@@ -225,30 +225,6 @@ input[type="range"]::-ms-thumb {
     border: 0;
     background-image: linear-gradient(to bottom, var(--secondary-color) 0, var(--secondary-color-dark) 100%);
 }
-
-/* @media (min-width: 849px) {
-    .group.zoom::after,
-    .pan-group::after,
-    .brush-size::after,
-    .brush-color::after,
-    .brush-opacity::after,
-    .tools::after,
-    .history::after {
-        content: '';
-        position: absolute;
-        right: calc(var(--space-2) / -2);
-        top: 10%;
-        height: 80%;
-        width: 2px;
-        background: linear-gradient(
-            to bottom,
-            transparent 0%,
-            rgba(255, 255, 255, 0.3) 20%,
-            rgba(255, 255, 255, 0.3) 80%,
-            transparent 100%
-        );
-    }
-} */
 
 @media (max-width: 848px) {
     .menu {
