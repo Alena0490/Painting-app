@@ -23,6 +23,37 @@
     cursor: crosshair;
 }
 
+/*** CURSORS */
+/* Pencil cursor */
+.draw-area #draw-canvas[data-tool="pencil"] {
+    cursor: var(--cursor-pencil);
+}
+
+/* Eraser cursor */
+.draw-area #draw-canvas[data-tool="eraser"] {
+    cursor: var(--cursor-eraser);
+}
+
+/* Move cursor */
+.draw-area #draw-canvas[data-tool="move"] {
+    cursor: var(--cursor-move);
+}
+
+/* Eyedropper cursor */
+.draw-area #draw-canvas[data-tool="eyedropper"] {
+    cursor: var(--cursor-eyedropper);
+}
+
+/* Bucket cursor */
+.draw-area #draw-canvas[data-tool="bucket"] {
+    cursor: var(--cursor-bucket);
+}
+
+/* Gradient cursor */
+.draw-area #draw-canvas[data-tool="gradient"] {
+    cursor: var(--cursor-gradient);
+}
+
 @media (max-width: 848px) {
     .draw-area {
         margin: var(--space-4);

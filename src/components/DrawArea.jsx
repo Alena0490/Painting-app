@@ -243,6 +243,7 @@ const DrawArea = ({
         ref={canvasRef}
         width={800}
         height={600}
+        data-tool={tool}
         onMouseDown={handleMouseDown}
         onMouseMove={draw}
         onMouseUp={endDrawing}
