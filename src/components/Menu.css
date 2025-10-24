@@ -23,7 +23,7 @@
 
 .menu h1 {
     margin-bottom: var(--space-3);
-    font-size: 1.5rem;
+    font-size: clamp(1rem, calc(1rem + 0.000625 * (100vw - 320px)), 1.5rem);
     font-weight: 700;
     color: var(--text-on-primary);
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
@@ -81,7 +81,7 @@
 .tools-title {
     display: block;
     text-align: center;
-    font-size: 13px;
+    font-size: clamp(0.75rem, calc(0.75rem + 0.0000711 * (100vw - 320px)), 0.8125rem);
     margin: 0 0 var(--space-2);
     color: var(--text-on-primary);
     font-weight: 500;
@@ -361,3 +361,54 @@ input[type="range"]::-ms-thumb {
         width: 80px;
     }
 }
+
+@media (max-width: 448px) {
+    .menu {
+        padding: var(--space-2) var(--space-2);
+    }
+
+    .menu h1 {
+        display: none;
+    }
+
+    .navigation {
+        gap: var(--space-1);
+    }
+
+    .group.zoom, 
+    .brush-color, 
+    .brush-opacity, 
+    .brush-size, 
+    .pan-group, 
+    .tools, 
+    .history, 
+    .file {
+        align-items: flex-start;
+        padding: var(--space-1);
+        min-height: calc(28px + var(--space-1) * 2 + var(--space-1) + 13px);
+    }
+
+    .tools-title {
+        flex: 0;
+        margin: 0 0 var(--space-1);
+    }
+
+    .buttons, .history-tools, .file-tools {
+        flex: 2;
+    }
+
+    .menu input[type="range"] {
+        flex: 2;
+        height: 1rem;
+    }
+    .menu button {
+        width: 24px;
+        height: 24px;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+        width: 20px;
+        height: 20px;
+    }
+}
+

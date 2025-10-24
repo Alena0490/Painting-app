@@ -65,6 +65,7 @@
 
 @media (max-width: 448px) {
     .draw-area {
-        margin: var(--space-3);
+        height: calc(85vh - 16px);
+        margin: var(--space-2);
     }
 }
