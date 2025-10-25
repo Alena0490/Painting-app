@@ -23,7 +23,7 @@
 
 .menu h1 {
     margin-bottom: var(--space-3);
-    font-size: clamp(1rem, calc(1rem + 0.000625 * (100vw - 320px)), 1.5rem);
+    font-size: clamp(1rem, calc(1rem + 0.5rem * ((100vw - 320px) / 880)), 1.5rem);
     font-weight: 700;
     color: var(--text-on-primary);
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
@@ -81,7 +81,7 @@
 .tools-title {
     display: block;
     text-align: center;
-    font-size: clamp(0.75rem, calc(0.75rem + 0.0000711 * (100vw - 320px)), 0.8125rem);
+    font-size: clamp(0.75rem, 0.74rem + 0.1vw, 0.8125rem);
     margin: 0 0 var(--space-2);
     color: var(--text-on-primary);
     font-weight: 500;
@@ -89,6 +89,7 @@
     letter-spacing: 0.3px;
     white-space: nowrap;
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 1px 2px rgba(0,0,0,.55); /* bylo ~.3 */
 }
 
 .menu input {
