@@ -280,7 +280,7 @@ const DrawArea = ({
   };
 
   return (
-    <div 
+    <section 
     className="draw-area"
      style={{
       '--zoom': zoom,
@@ -298,7 +298,7 @@ const DrawArea = ({
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
       />
-    </div>
+    </section>
   );
 };
 

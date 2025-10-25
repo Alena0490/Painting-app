@@ -148,3 +148,11 @@ input:focus-visible,
   outline: var(--focus-ring);
 }
 
+@media screen and (max-width: 848px ) {
+  body {
+    background-image: url(./img/waves-mobile.webp);
+    background-position: center center;
+    background-size: cover;
+  }
+}
+
